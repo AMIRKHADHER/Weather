@@ -24,7 +24,7 @@ class WeatherRmoteDataSourceImp extends WeatherRemoteDataSource {
     );
     print("response.statusCoderesponse.statusCode${response.statusCode}");
     if (response.statusCode == 200) {
-print("WeatherModel.fromJson(jsonDecode(response.body)).city${WeatherModel.fromJson(jsonDecode(response.body)).city!.name}");
+      ///print("WeatherModel.fromJson(jsonDecode(response.body)).city${WeatherModel.fromJson(jsonDecode(response.body)).city!.name}");
       return  WeatherModel.fromJson(jsonDecode(response.body));
     } else if (response.statusCode == 401) {
       throw UnauthorizedException( message: unauthorisedMessage,

@@ -1,12 +1,12 @@
 // To parse this JSON data, do
 //
-//     final weather = weatherFromJson(jsonString);
+//     final weatherModel = weatherModelFromJson(jsonString);
 
 import 'dart:convert';
 
-WeatherModel weatherFromJson(String str) => WeatherModel.fromJson(json.decode(str));
+WeatherModel weatherModelFromJson(String str) => WeatherModel.fromJson(json.decode(str));
 
-String weatherToJson(WeatherModel data) => json.encode(data.toJson());
+String weatherModelToJson(WeatherModel data) => json.encode(data.toJson());
 
 class WeatherModel {
   WeatherModel({
@@ -115,28 +115,31 @@ class ListElement {
     this.pop,
     this.sys,
     this.dtTxt,
+    this.rain,
   });
 
   int? dt;
   MainClass? main;
-  List<WeatherElement>? weather;
+  List<Weather>? weather;
   Clouds? clouds;
   Wind? wind;
   int? visibility;
-  int? pop;
+  double? pop;
   Sys? sys;
   DateTime? dtTxt;
+  Rain? rain;
 
   factory ListElement.fromJson(Map<String, dynamic> json) => ListElement(
     dt: json["dt"],
     main: json["main"] == null ? null : MainClass.fromJson(json["main"]),
-    weather: json["weather"] == null ? [] : List<WeatherElement>.from(json["weather"]!.map((x) => WeatherElement.fromJson(x))),
+    weather: json["weather"] == null ? [] : List<Weather>.from(json["weather"]!.map((x) => Weather.fromJson(x))),
     clouds: json["clouds"] == null ? null : Clouds.fromJson(json["clouds"]),
     wind: json["wind"] == null ? null : Wind.fromJson(json["wind"]),
     visibility: json["visibility"],
-    pop: json["pop"],
+    pop: json["pop"]?.toDouble(),
     sys: json["sys"] == null ? null : Sys.fromJson(json["sys"]),
     dtTxt: json["dt_txt"] == null ? null : DateTime.parse(json["dt_txt"]),
+    rain: json["rain"] == null ? null : Rain.fromJson(json["rain"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -149,6 +152,7 @@ class ListElement {
     "pop": pop,
     "sys": sys?.toJson(),
     "dt_txt": dtTxt?.toIso8601String(),
+    "rain": rain?.toJson(),
   };
 }
 
@@ -216,6 +220,22 @@ class MainClass {
   };
 }
 
+class Rain {
+  Rain({
+    this.the3H,
+  });
+
+  double? the3H;
+
+  factory Rain.fromJson(Map<String, dynamic> json) => Rain(
+    the3H: json["3h"]?.toDouble(),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "3h": the3H,
+  };
+}
+
 class Sys {
   Sys({
     this.pod,
@@ -232,15 +252,15 @@ class Sys {
   };
 }
 
-enum Pod { N, D }
+enum Pod { D, N }
 
 final podValues = EnumValues({
   "d": Pod.D,
   "n": Pod.N
 });
 
-class WeatherElement {
-  WeatherElement({
+class Weather {
+  Weather({
     this.id,
     this.main,
     this.description,
@@ -252,7 +272,7 @@ class WeatherElement {
   Description? description;
   String? icon;
 
-  factory WeatherElement.fromJson(Map<String, dynamic> json) => WeatherElement(
+  factory Weather.fromJson(Map<String, dynamic> json) => Weather(
     id: json["id"],
     main: mainEnumValues.map[json["main"]]!,
     description: descriptionValues.map[json["description"]]!,
@@ -267,21 +287,23 @@ class WeatherElement {
   };
 }
 
-enum Description { OVERCAST_CLOUDS, BROKEN_CLOUDS, SCATTERED_CLOUDS, CLEAR_SKY, FEW_CLOUDS }
+enum Description { OVERCAST_CLOUDS, BROKEN_CLOUDS, SCATTERED_CLOUDS, FEW_CLOUDS, CLEAR_SKY, LIGHT_RAIN }
 
 final descriptionValues = EnumValues({
   "broken clouds": Description.BROKEN_CLOUDS,
   "clear sky": Description.CLEAR_SKY,
   "few clouds": Description.FEW_CLOUDS,
+  "light rain": Description.LIGHT_RAIN,
   "overcast clouds": Description.OVERCAST_CLOUDS,
   "scattered clouds": Description.SCATTERED_CLOUDS
 });
 
-enum MainEnum { CLOUDS, CLEAR }
+enum MainEnum { CLOUDS, CLEAR, RAIN }
 
 final mainEnumValues = EnumValues({
   "Clear": MainEnum.CLEAR,
-  "Clouds": MainEnum.CLOUDS
+  "Clouds": MainEnum.CLOUDS,
+  "Rain": MainEnum.RAIN
 });
 
 class Wind {

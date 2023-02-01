@@ -26,6 +26,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       child: Scaffold(
         appBar: AppBar(
             elevation: 0,
+            toolbarHeight: 100,
             title: Text("BIENVENUE ${widget.weatherScreenParameters!.userIdantidiant.toString()}"
               ,
               style: const TextStyle(
@@ -34,45 +35,52 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 // fontFamily: 'Gilroy bold',
               ),
             )),
-        body: SingleChildScrollView(
-          child: BlocConsumer<WeatherBloc, WeatherState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
-            builder: (context, state) {
-              if (state is GetSevenDayForecastLoading) {}
-              if (state is GetSevenDayForecastErrorState) {}
-              if (state is GetSevenDayForecastLoaded) {
-                return Column(
-                  children: [
-                    buildSevenDayForecast(
-                        state.weatherModel.list![0].weather![0],
-                        state.weatherModel.list![0].dtTxt),
-                    buildSevenDayForecast(
-                        state.weatherModel.list![1].weather![0],
-                        state.weatherModel.list![0].dtTxt),
-                    buildSevenDayForecast(
-                        state.weatherModel.list![2].weather![0],
-                        state.weatherModel.list![0].dtTxt),
-                    buildSevenDayForecast(
-                        state.weatherModel.list![3].weather![0],
-                        state.weatherModel.list![0].dtTxt),
-                    buildSevenDayForecast(
-                        state.weatherModel.list![4].weather![0],
-                        state.weatherModel.list![0].dtTxt)
-                  ],
-                );
-              }
-              return Container();
-            },
+        body: Center(
+          child: SingleChildScrollView(
+            child: BlocConsumer<WeatherBloc, WeatherState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                if (state is GetSevenDayForecastLoading) {}
+                if (state is GetSevenDayForecastErrorState) {}
+                if (state is GetSevenDayForecastLoaded) {
+                  return Padding(padding: const EdgeInsets.all(4),
+                    child: Card(elevation: 0,color: Colors.white,
+                      child: Column(
+                        children: [
+                          buildSevenDayForecast(
+                              state.weatherModel.list![0].weather![0],
+                              state.weatherModel.list![0].dtTxt),
+                          buildSevenDayForecast(
+                              state.weatherModel.list![9].weather![0],
+                              state.weatherModel.list![9].dtTxt),
+                          buildSevenDayForecast(
+                              state.weatherModel.list![12].weather![0],
+                              state.weatherModel.list![12].dtTxt),
+                          buildSevenDayForecast(
+                              state.weatherModel.list![23].weather![0],
+                              state.weatherModel.list![23].dtTxt),
+                          buildSevenDayForecast(
+                              state.weatherModel.list![31].weather![0],
+                              state.weatherModel.list![31].dtTxt)
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return Container();
+              },
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget buildSevenDayForecast(WeatherElement weatherElement, DateTime? dtTxt) {
-    return Row(
+  Widget buildSevenDayForecast(Weather weatherElement, DateTime? dtTxt) {
+    return Row(mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CachedNetworkImage(
           imageUrl: Mapper.convertImage(weatherElement.icon!),
@@ -82,21 +90,24 @@ class _WeatherScreenState extends State<WeatherScreen> {
           /* errorWidget: (context, url, error) =>
                           ErrorImage(),*/
         ),
-        Column(
+        Column(mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              dtTxt!.toString(),
-              style: TextStyle(color: Colors.black),
+              "${dtTxt!.toString().substring(0,10)}  ${dtTxt.toString().substring(11,19)}",
+              style: const TextStyle(color: Colors.black),
             ),
             Text(
-              "${weatherElement.main} : ${weatherElement.description}",
-              style: TextStyle(color: Colors.black),
+              "${weatherElement.main} : \n${weatherElement.description}",
+              style: const TextStyle(color: Colors.black),
             )
           ],
         )
       ],
     );
   }
+
+
 }
 
 class WeatherScreenParameters {
