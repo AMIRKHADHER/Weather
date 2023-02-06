@@ -3,8 +3,8 @@ part of 'weather_bloc.dart';
 abstract class WeatherEvent extends Equatable {
   const WeatherEvent();
 }
-class GetSevenDayForecastPressed extends WeatherEvent {
-  GetSevenDayForecastPressed();
+class GetFiveDayForecastPressed extends WeatherEvent {
+  GetFiveDayForecastPressed();
 
   @override
   List<Object?> get props => [];

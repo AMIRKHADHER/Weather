@@ -17,12 +17,12 @@ class WheatherRepositoryImpl extends WeatherRepository {
 
 
   @override
-  Future<Either<Failure, WeatherModel>> getSevenDayForecast() async {
+  Future<Either<Failure, WeatherModel>> getFiveDayForecast() async {
     final hasConnection = await ConnectionHelper.hasConnection();
     if (await hasConnection) {
       try {
         final remoteData =
-        await weatherRmoteDataSourceImp!.getSevenDayForecast();
+        await weatherRmoteDataSourceImp!.getFiveDayForecast();
         return Right(remoteData);
       } on ServerException catch (ex) {
         return Left(

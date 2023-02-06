@@ -7,28 +7,28 @@ import 'package:weather/data/models/weather_model.dart';
 import '../../core/error/failures.dart';
 import '../../core/usecases/usecase.dart';
 import '../../core/utils/constants.dart';
-import '../../domain/usecases/get_seven_day_forecast_use_case.dart';
+import '../../domain/usecases/get_five_day_forecast_use_case.dart';
 
 part 'weather_event.dart';
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
-  final GetSevenDayForecastUseCase? getSevenDayForecastUseCase;
-  WeatherBloc({required this.getSevenDayForecastUseCase}) : super(WeatherInitial()) {
+  final GetFiveDayForecastUseCase? getFiveDayForecastUseCase;
+  WeatherBloc({required this.getFiveDayForecastUseCase}) : super(WeatherInitial()) {
 
-    on<GetSevenDayForecastPressed>(_onGetSevenDayForecastPressed);
+    on<GetFiveDayForecastPressed>(_onGetFiveDayForecastPressed);
 
   }
 
-  FutureOr<void> _onGetSevenDayForecastPressed(GetSevenDayForecastPressed event, Emitter<WeatherState> emit) async {
-    emit(GetSevenDayForecastLoading());
+  FutureOr<void> _onGetFiveDayForecastPressed(GetFiveDayForecastPressed event, Emitter<WeatherState> emit) async {
+    emit(GetFiveDayForecastLoading());
 
-    final result = await getSevenDayForecastUseCase!(NoParams());
+    final result = await getFiveDayForecastUseCase!(NoParams());
     result.fold((failure) {
-      emit(GetSevenDayForecastErrorState(  message: mapFailureToErrorMessage(failure),
+      emit(GetFiveDayForecastErrorState(  message: mapFailureToErrorMessage(failure),
         errorCode: mapFailureToErrorCode(failure),));
     }, (weatherModel) {
-      emit(GetSevenDayForecastLoaded(weatherModel: weatherModel));
+      emit(GetFiveDayForecastLoaded(weatherModel: weatherModel));
     });
   }
 }

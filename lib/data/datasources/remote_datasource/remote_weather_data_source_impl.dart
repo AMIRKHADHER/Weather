@@ -12,7 +12,7 @@ class WeatherRmoteDataSourceImp extends WeatherRemoteDataSource {
   WeatherRmoteDataSourceImp({required this.client});
 
   @override
-  Future<WeatherModel> getSevenDayForecast() async {
+  Future<WeatherModel> getFiveDayForecast() async {
     try{
    /* Map<String, String> headers = {
       'Content-Type': 'application/json',

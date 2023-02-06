@@ -6,13 +6,13 @@ import '../../../core/usecases/usecase.dart';
 import '../entities/weather.dart';
 import '../repositories/weather_repository.dart';
 
-class GetSevenDayForecastUseCase implements UseCase<WeatherModel, NoParams> {
+class GetFiveDayForecastUseCase implements UseCase<WeatherModel, NoParams> {
   final WeatherRepository? weatherRepository;
 
-  GetSevenDayForecastUseCase({required this.weatherRepository});
+  GetFiveDayForecastUseCase({required this.weatherRepository});
 
   @override
   Future<Either<Failure, WeatherModel>> call(NoParams params) async {
-    return await weatherRepository!.getSevenDayForecast();
+    return await weatherRepository!.getFiveDayForecast();
   }
 }

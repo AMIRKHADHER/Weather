@@ -16,6 +16,12 @@ class Background extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                child:Image.asset("assets/login/Logo_SNCF.png", height: 100, width:
+                100) ),
+            Positioned(
                 bottom: 0,
                 right: 0,
                 left: 0,
